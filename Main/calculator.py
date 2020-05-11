@@ -27,13 +27,12 @@ def add():
 
 def do():
     global op
+    up()
     if op == "add":
-        up()
-        print(prev[0])
-        print(prev[1])
-        entry.delete(0, END)
+        # entry.delete(0, END)
         entry.insert(END, str(int(prev[0]) + int(prev[1])))
-
+    if op == "sub":
+        entry.insert(END, str(int(prev[0]) - int(prev[1])))
 
 def clear():
     prev.clear()
