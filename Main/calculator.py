@@ -12,25 +12,29 @@ entry.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
 def up():
     prev.append(entry.get())
-    entry.delete(0, END)
-
 
 def number(n):
     entry.insert(END, n)
-    print(n)
 
 
 def add():
     up()
     global op
     op = "add"
+    entry.insert(END, " + ")
 
 
 def do():
     global op
+    entry.delete(0, END)
     if op == "add":
-        entry.delete(0, END)
-        entry.insert(-1, str(prev[-1] + prev[-2]))
+        prev.append(entry.get()[entry.get().indexOf(" + "): END])
+        entry.insert(END, str(prev[-1] + prev[-2]))
+
+
+def clear():
+    prev.clear()
+    entry.delete(0, END)
 
 
 numbers = []
@@ -56,10 +60,14 @@ numbers[7].grid(row=5, column=1)
 numbers[8].grid(row=5, column=2)
 numbers[9].grid(row=6, column=1)
 
-addition = Button(root, text="+", padx=40, pady=20, command=add)
-clear = Button(root, text="clear", padx=35, pady=20, command=add)
+addition = Button(root, text="+", padx=40, pady=20, command=lambda: add())
+
+
+clear = Button(root, text="clear", padx=30, pady=20, command=clear)
+enter = Button(root, text="enter", padx=30, pady=20, command=do)
 
 addition.grid(row=7, column=0)
 clear.grid(row=6, column=2)
+enter.grid(row=6, column=0)
 
 root.mainloop()
