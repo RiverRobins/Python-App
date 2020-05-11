@@ -12,6 +12,8 @@ entry.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
 def up():
     prev.append(entry.get())
+    entry.delete(0, END)
+
 
 def number(n):
     entry.insert(END, n)
@@ -21,15 +23,16 @@ def add():
     up()
     global op
     op = "add"
-    entry.insert(END, " + ")
 
 
 def do():
     global op
-    entry.delete(0, END)
     if op == "add":
-        prev.append(entry.get()[entry.get().indexOf(" + "): END])
-        entry.insert(END, str(prev[-1] + prev[-2]))
+        up()
+        print(prev[0])
+        print(prev[1])
+        entry.delete(0, END)
+        entry.insert(END, str(int(prev[0]) + int(prev[1])))
 
 
 def clear():
