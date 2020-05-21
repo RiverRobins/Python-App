@@ -6,10 +6,13 @@ from PIL import ImageTk, Image
 imgPath = os.getcwd() + "/imgs/"
 
 root = Tk()
+
+currentImg = 0
+
 c = Canvas(root)
 c.pack()
 scroll = Scrollbar(c, orient="vertical", command=c.yview)
-scroll.grid(column=1)
+scroll.pack(side=RIGHT, fill=BOTH)
 
 c.config(yscrollcommand=scroll.set)
 
@@ -18,16 +21,21 @@ images = []
 for n in os.listdir("imgs"):
     if n == ".DS_Store":
         continue
-    # try:
-    images.append(ImageTk.PhotoImage(Image.open(imgPath + n)))
-    # finally:
-    #     print("file: " + n + " can't be opened.")
+    images.append(ImageTk.PhotoImage(Image.open(imgPath + n).resize((500, 500))))
 
 mainpic = Label(c, image=images[0])
-mainpic.grid(row=0, column=0, columnspan=2)
+mainpic.pack()
 
-back = Button(c, text="<")
-forword = Button(c, text=">")
+buttons = Label(c)
+buttons.pack()
+
+
+def change_img(n):
+    return
+
+
+back = Button(buttons, text="<", command=lambda: change_img(-1))
+forword = Button(buttons, text=">", command=lambda: change_img(1))
 
 back.grid(row=3, column=0)
 forword.grid(row=3, column=1)
