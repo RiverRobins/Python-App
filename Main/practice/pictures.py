@@ -3,7 +3,13 @@ import os
 
 from PIL import ImageTk, Image
 
-imgPath = os.getcwd() + "/imgs/"
+def new_w(n):
+    t = Toplevel()
+    l = Label(t, image=n).pack()
+
+
+imgPath = os.getcwd() + "/practice/imgs/"
+print(os.getcwd())
 
 root = Tk()
 
@@ -11,7 +17,7 @@ currentImg = 0
 
 images = []
 
-for n in os.listdir("imgs"):
+for n in os.listdir("practice/imgs"):
     if n == ".DS_Store":
         continue
     images.append(ImageTk.PhotoImage(Image.open(imgPath + n).resize((500, 500))))
@@ -24,7 +30,7 @@ scroll.pack(side=RIGHT, fill=BOTH)
 
 c.config(yscrollcommand=scroll.set)
 
-mainpic = Label(c, image=images[0])
+mainpic = Button(c, image=images[0], command=lambda: new_w(images[currentImg]))
 mainpic.pack()
 
 buttons = Label(c)
