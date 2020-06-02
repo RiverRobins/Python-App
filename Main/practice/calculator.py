@@ -3,12 +3,6 @@ from tkinter import *
 prev = []
 op = ""
 
-root = Tk()
-root.title("Calculator")
-
-entry = Entry(root, width=35, borderwidth=5)
-entry.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
-
 
 def clear():
     prev.clear()
@@ -63,6 +57,12 @@ def do():
         entry.insert(END, "No operator selected")
         clear()
 
+
+root = Tk()
+root.title("Calculator")
+
+entry = Entry(root, width=35, borderwidth=5)
+entry.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
 numbers = []
 numbers.append(Button(root, text="1", padx=40, pady=20, command=lambda: number("1")))
