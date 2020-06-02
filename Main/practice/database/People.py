@@ -20,17 +20,23 @@ root = Tk()
 
 
 class enter_new:
-    first = Entry(root)
-    last = Entry(root)
-    age = Entry(root)
-    sex = Entry(root)
+    first = None
+    last = None
+    age = None
+    sex = None
+
+    def __init__(self, n):
+        self.first = Entry(n)
+        self.last = Entry(n)
+        self.age = Entry(n)
+        self.sex = Entry(n)
 
 
 mainbar = Label(root).pack()
 
 create = Label(mainbar).pack()
 createText = Label(create, text="Add").pack()
-
+add = enter_new(create)
 
 
 root.mainloop()
