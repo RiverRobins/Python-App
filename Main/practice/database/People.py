@@ -20,32 +20,42 @@ root = Tk()
 
 
 class enter_new:
-    first = None
-    last = None
-    age = None
-    sex = None
+    # first = None
+    # last = None
+    # age = None
+    # sex = None
 
     def __init__(self, n):
-        self.first = Entry(n).pack()
-        self.last = Entry(n).pack()
-        self.age = Entry(n).pack()
-        self.sex = Entry(n).pack()
+        self.first = Entry(n)
+        self.last = Entry(n)
+        self.age = Entry(n)
+        self.sex = Entry(n)
+        self.first.pack()
+        self.last.pack()
+        self.age.pack()
+        self.sex.pack()
 
 
 def add():
-    global add
-    cur.execute("INSERT INTO customers(first, last, age, sex) VALUES (%s, %s, %s, %s)")
+    global addLabel
+    cur.execute("INSERT INTO customers(first_name, last_name, age, sex) VALUES ('%s', '%s', %s, '%s');" % (addLabel.first.get(), addLabel.last.get(), addLabel.age.get(), addLabel.sex.get()))
 
 mainbar = Label(root).pack()
 
 create = Label(mainbar).pack()
 createText = Label(create, text="Add").pack()
-add = enter_new(create)
+addLabel = enter_new(create)
 add_button = Button(create, text="Submit", command=add).pack()
 
 results = []
-cur.execute("SELECT * FROM customers")
-for i in cur.fetchall():
-    results.append(Label(root, text=str(i)).pack())
+
+
+def showall():
+    cur.execute("SELECT * FROM customers")
+    for i in cur.fetchall():
+        results.append(Label(root, text=str(i)).pack())
+
+
+show = Button(root, text="Show All", command=showall).pack()
 
 root.mainloop()
