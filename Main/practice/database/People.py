@@ -35,10 +35,19 @@ class enter_new:
         self.age.pack()
         self.sex.pack()
 
+    def clear(self):
+        self.first.delete(0, -1)
+        self.last.delete(0, -1)
+        self.age.delete(0, -1)
+        self.sex.delete(0, -1)
+
 
 def add():
     global addLabel
     cur.execute("INSERT INTO customers(first_name, last_name, age, sex) VALUES ('%s', '%s', %s, '%s');" % (addLabel.first.get(), addLabel.last.get(), addLabel.age.get(), addLabel.sex.get()))
+    db.commit()
+    addLabel.clear()
+
 
 mainbar = Label(root).pack()
 
@@ -47,15 +56,20 @@ createText = Label(create, text="Add").pack()
 addLabel = enter_new(create)
 add_button = Button(create, text="Submit", command=add).pack()
 
+show = Label(root).pack()
+
 results = []
 
 
 def showall():
     cur.execute("SELECT * FROM customers")
     for i in cur.fetchall():
-        results.append(Label(root, text=str(i)).pack())
+        results.append(Label(show, text=str(i)).pack())
 
 
-show = Button(root, text="Show All", command=showall).pack()
+show_button = Button(root, text="Refresh", command=showall).pack()
+
+showall()
 
 root.mainloop()
+db.close()
