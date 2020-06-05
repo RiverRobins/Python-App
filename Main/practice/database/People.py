@@ -10,11 +10,14 @@ cur.execute("CREATE DATABASE IF NOT EXISTS people")
 db.config(database="people")
 
 cur.execute("CREATE TABLE IF NOT EXISTS customers ("
-            "id BIGINT AUTO_INCREMENT PRIMARY KEY,"
+            "id BIGINT AUTO_INCREMENT,"
             "first_name VARCHAR(255),"
             "last_name VARCHAR(255),"
-            "age INT,"
-            "sex ENUM('M', 'F', 'N/A') DEFAULT 'N/A');")
+            "dob DATE,"
+            "sex ENUM('M', 'F', 'N/A') DEFAULT 'N/A',"
+            "PRIMARY KEY (id),"
+            "FOREIGN KEY (rep_id) REFERENCES representatives (id)"
+            ");")
 
 root = Tk()
 
@@ -61,10 +64,14 @@ show = Label(root).pack()
 results = []
 
 
+def format_customer(n):
+    return
+
+
 def showall():
     cur.execute("SELECT * FROM customers")
     for i in cur.fetchall():
-        results.append(Label(show, text=str(i)).pack())
+        results.append(Label(show, text=format_customer(i)).pack())
 
 
 show_button = Button(root, text="Refresh", command=showall).pack()
