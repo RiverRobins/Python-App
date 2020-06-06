@@ -7,16 +7,41 @@ cur = db.cursor()
 
 cur.execute("CREATE DATABASE IF NOT EXISTS people")
 
-db.config(database="people")
-
 cur.execute("CREATE TABLE IF NOT EXISTS customers ("
-            "id BIGINT AUTO_INCREMENT,"
+            "id BIGINT UNSIGNED AUTO_INCREMENT,"
             "first_name VARCHAR(255),"
             "last_name VARCHAR(255),"
             "dob DATE,"
             "sex ENUM('M', 'F', 'N/A') DEFAULT 'N/A',"
+            "notes TEXT"
+            "rep_id BIGINT UNSIGNED"
             "PRIMARY KEY (id),"
             "FOREIGN KEY (rep_id) REFERENCES representatives (id)"
+            ");"
+            "CREATE TABLE IF NOT EXISTS employees ("
+            "id BIGINT UNSIGNED AUTO_INCREMENT"
+            "first_name VARCHAR(255),"
+            "last_name VARCHAR(255),"
+            "dob DATE,"
+            "sex ENUM('M', 'F', 'N/A') DEFAULT 'N/A',"
+            "salary INT UNSIGNED"
+            "notes TEXT,"
+            "hire_date DATE,"
+            "end_date DATE DEFAULT NULL"
+            ");"
+            "CREATE TABLE IF NOT EXISTS representatives("
+            "id BIGINT UNSIGNED AUTO_INCREMENT,"
+            "emp_id BIGINT UNSIGNED AUTO_INCREMENT,"
+            "manager_id BIGINT UNSIGNED AUTO_INCREMENT,"
+            "specialty VARCHAR(255),"
+            "PRIMARY KEY id,"
+            "FOREIGN KEY emp_id REFERENCES employees (id),"
+            "FOREIGN KEY manager_id REFERENCES managers (id)"
+            ");"
+            "CREATE TABLE IF NOT EXISTS specialties ("
+            "id BIGINT UNSIGNED AUTO_INCREMENT,"
+            "title VARCHAR(255),"
+            "desc TEXT,"
             ");")
 
 root = Tk()
