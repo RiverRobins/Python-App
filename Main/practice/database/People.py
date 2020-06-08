@@ -5,7 +5,7 @@ from tkinter import *
 db = mysql.connector.connect(host="localhost", user=creds.mySql_user, passwd=creds.mySql_password, database="people")
 cur = db.cursor()
 
-cur.execute("CREATE DATABASE IF NOT EXISTS people")
+cur.execute("CREATE DATABASE IF NOT EXISTS people;")
 
 cur.execute("CREATE TABLE IF NOT EXISTS customers ("
             "id BIGINT UNSIGNED AUTO_INCREMENT,"
@@ -13,36 +13,68 @@ cur.execute("CREATE TABLE IF NOT EXISTS customers ("
             "last_name VARCHAR(255),"
             "dob DATE,"
             "sex ENUM('M', 'F', 'N/A') DEFAULT 'N/A',"
-            "notes TEXT"
-            "rep_id BIGINT UNSIGNED"
+            "notes TEXT,"
+            "rep_id BIGINT UNSIGNED,"
             "PRIMARY KEY (id),"
             "FOREIGN KEY (rep_id) REFERENCES representatives (id)"
-            ");"
+            ");")
+cur.execute(
             "CREATE TABLE IF NOT EXISTS employees ("
-            "id BIGINT UNSIGNED AUTO_INCREMENT"
+            "id BIGINT UNSIGNED AUTO_INCREMENT,"
             "first_name VARCHAR(255),"
             "last_name VARCHAR(255),"
             "dob DATE,"
             "sex ENUM('M', 'F', 'N/A') DEFAULT 'N/A',"
-            "salary INT UNSIGNED"
+            "salary INT UNSIGNED,"
             "notes TEXT,"
             "hire_date DATE,"
-            "end_date DATE DEFAULT NULL"
-            ");"
-            "CREATE TABLE IF NOT EXISTS representatives("
-            "id BIGINT UNSIGNED AUTO_INCREMENT,"
-            "emp_id BIGINT UNSIGNED AUTO_INCREMENT,"
-            "manager_id BIGINT UNSIGNED AUTO_INCREMENT,"
-            "specialty VARCHAR(255),"
-            "PRIMARY KEY id,"
-            "FOREIGN KEY emp_id REFERENCES employees (id),"
-            "FOREIGN KEY manager_id REFERENCES managers (id)"
-            ");"
+            "end_date DATE DEFAULT NULL,"
+            "PRIMARY KEY (id)"
+            ");")
+cur.execute(
             "CREATE TABLE IF NOT EXISTS specialties ("
             "id BIGINT UNSIGNED AUTO_INCREMENT,"
             "title VARCHAR(255),"
-            "desc TEXT,"
+            "description TEXT,"
+            "PRIMARY KEY (id)"
             ");")
+cur.execute(
+            "CREATE TABLE IF NOT EXISTS managers ("
+            "id BIGINT UNSIGNED AUTO_INCREMENT,"
+            "emp_id BIGINT UNSIGNED,"
+            "specialty_id BIGINT UNSIGNED,"
+            "PRIMARY KEY (id),"
+            "FOREIGN KEY (emp_id) REFERENCES employees (id),"
+            "FOREIGN KEY (specialty_id) REFERENCES specialties (id)"
+            ");")
+cur.execute(
+            "CREATE TABLE IF NOT EXISTS representatives("
+            "id BIGINT UNSIGNED AUTO_INCREMENT,"
+            "emp_id BIGINT UNSIGNED,"
+            "manager_id BIGINT UNSIGNED,"
+            "specialty_id BIGINT UNSIGNED,"
+            "PRIMARY KEY (id),"
+            "FOREIGN KEY (emp_id)"
+            "   REFERENCES employees(id),"
+            "FOREIGN KEY (manager_id)"
+            "   REFERENCES managers(id),"
+            "FOREIGN KEY (specialty_id) REFERENCES specialties(id)"
+            ");")
+# cur.execute(
+#             "CREATE TABLE IF NOT EXISTS cases ("
+#             "id BIGINT UNSIGNED AUTO_INCREMENT,"
+#             "title VARCHAR(255),"
+#             "issue TEXT,"
+#             "outcome TEXT,"
+#             "customer_id BIGINT UNSIGNED,"
+#             "rep_id BIGINT UNSIGNED,"
+#             "PRIMARY KEY (id),"
+#             "FOREIGN KEY (customer_id) REFERENCES customers(id),"
+#             "FOREIGN KEY (rep_id) REFERENCES representatives(id)"
+#             ");")
+
+# cur.close()
+# cur = db.cursor()
 
 root = Tk()
 
@@ -101,7 +133,7 @@ def showall():
 
 show_button = Button(root, text="Refresh", command=showall).pack()
 
-showall()
+# showall()
 
 root.mainloop()
 db.close()
