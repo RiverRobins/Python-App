@@ -60,18 +60,18 @@ cur.execute(
             "   REFERENCES managers(id),"
             "FOREIGN KEY (specialty_id) REFERENCES specialties(id)"
             ");")
-# cur.execute(
-#             "CREATE TABLE IF NOT EXISTS cases ("
-#             "id BIGINT UNSIGNED AUTO_INCREMENT,"
-#             "title VARCHAR(255),"
-#             "issue TEXT,"
-#             "outcome TEXT,"
-#             "customer_id BIGINT UNSIGNED,"
-#             "rep_id BIGINT UNSIGNED,"
-#             "PRIMARY KEY (id),"
-#             "FOREIGN KEY (customer_id) REFERENCES customers(id),"
-#             "FOREIGN KEY (rep_id) REFERENCES representatives(id)"
-#             ");")
+cur.execute(
+            "CREATE TABLE IF NOT EXISTS cases ("
+            "id BIGINT UNSIGNED AUTO_INCREMENT,"
+            "title VARCHAR(255),"
+            "issue TEXT,"
+            "outcome TEXT,"
+            "customer_id BIGINT UNSIGNED,"
+            "rep_id BIGINT UNSIGNED,"
+            "PRIMARY KEY (id),"
+            "FOREIGN KEY (rep_id) REFERENCES representatives(id),"
+            "FOREIGN KEY (customer_id) REFERENCES customers(id)"
+            ");")
 
 # cur.close()
 # cur = db.cursor()
