@@ -1,6 +1,14 @@
 import Creds as creds
 import mysql.connector
 from tkinter import *
+from tkcalendar import Calendar, DateEntry
+
+
+
+class Theme:
+    text = "#000000"
+    background = "FFFFFF"
+
 
 db = mysql.connector.connect(host="localhost", user=creds.mySql_user, passwd=creds.mySql_password, database="people")
 cur = db.cursor()
@@ -73,26 +81,25 @@ cur.execute(
             "FOREIGN KEY (customer_id) REFERENCES customers(id)"
             ");")
 
-# cur.close()
-# cur = db.cursor()
-
 root = Tk()
 
 
+theme = Theme()
+
+
 class enter_new:
-    # first = None
-    # last = None
-    # age = None
-    # sex = None
 
     def __init__(self, n):
+        self.label_first = Label(n, text="Enter first name: ", fg=theme.text).pack()
         self.first = Entry(n)
+        self.label_last = Label(n, text="Enter last name: ", fg=theme.text).pack()
         self.last = Entry(n)
-        self.age = Entry(n)
+
+        self.dob = Entry(n)
         self.sex = Entry(n)
         self.first.pack()
         self.last.pack()
-        self.age.pack()
+        self.dob.pack()
         self.sex.pack()
 
     def clear(self):
@@ -111,7 +118,7 @@ def add():
 
 mainbar = Label(root).pack()
 
-create = Label(mainbar).pack()
+create = LabelFrame(mainbar).pack()
 createText = Label(create, text="Add").pack()
 addLabel = enter_new(create)
 add_button = Button(create, text="Submit", command=add).pack()
@@ -133,7 +140,7 @@ def showall():
 
 show_button = Button(root, text="Refresh", command=showall).pack()
 
-# showall()
+showall()
 
 root.mainloop()
 db.close()
