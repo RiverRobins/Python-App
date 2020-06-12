@@ -1,8 +1,9 @@
 import Creds as creds
 import mysql.connector
 from tkinter import *
+from tkinter import messagebox
 from tkcalendar import Calendar, DateEntry
-
+import datetime
 
 
 class Theme:
@@ -92,26 +93,39 @@ class enter_new:
     def __init__(self, n):
         self.label_first = Label(n, text="Enter first name: ", fg=theme.text).pack()
         self.first = Entry(n)
+        self.first.pack()
         self.label_last = Label(n, text="Enter last name: ", fg=theme.text).pack()
         self.last = Entry(n)
-
-        self.dob = Entry(n)
-        self.sex = Entry(n)
-        self.first.pack()
         self.last.pack()
+        self.label_dob = Label(n, text="Enter date of birth: ", fg=theme.text).pack()
+        self.dob = Entry(n)
         self.dob.pack()
+        self.label_sex = Label(n, text="Enter sex: ", fg=theme.text).pack()
+        self.sex = Entry(n)
         self.sex.pack()
+
+
 
     def clear(self):
         self.first.delete(0, -1)
         self.last.delete(0, -1)
-        self.age.delete(0, -1)
+        self.dob.delete(0, -1)
         self.sex.delete(0, -1)
+
+    def getDate(self):
+        while True:  # 44-44-44
+            if len(self.dob.get()) <= 8:
+                return datetime.datetime.strptime(self.dob.get(), "%m-%d-%y")
+            elif len(self.dob.get()) >= 9:
+                return datetime.datetime.strptime(self.dob.get(), "%m-%d-%Y")
+            else:
+                messagebox.showwarning("Error processing date", "Please enter date format in MM/DD/YY or MM/DD/YYYY")
+
 
 
 def add():
     global addLabel
-    cur.execute("INSERT INTO customers(first_name, last_name, age, sex) VALUES ('%s', '%s', %s, '%s');" % (addLabel.first.get(), addLabel.last.get(), addLabel.age.get(), addLabel.sex.get()))
+    cur.execute("INSERT INTO customers(first_name, last_name, dob, sex) VALUES ('%s', '%s', %s, '%s');" % (addLabel.first.get(), addLabel.last.get(), addLabel.getDate(), addLabel.sex.get()))
     db.commit()
     addLabel.clear()
 
