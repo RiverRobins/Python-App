@@ -16,17 +16,6 @@ cur = db.cursor()
 
 cur.execute("CREATE DATABASE IF NOT EXISTS people;")
 
-cur.execute("CREATE TABLE IF NOT EXISTS customers ("
-            "id BIGINT UNSIGNED AUTO_INCREMENT,"
-            "first_name VARCHAR(255),"
-            "last_name VARCHAR(255),"
-            "dob DATE,"
-            "sex ENUM('M', 'F', 'N/A') DEFAULT 'N/A',"
-            "notes TEXT,"
-            "rep_id BIGINT UNSIGNED,"
-            "PRIMARY KEY (id),"
-            "FOREIGN KEY (rep_id) REFERENCES representatives (id)"
-            ");")
 cur.execute(
             "CREATE TABLE IF NOT EXISTS employees ("
             "id BIGINT UNSIGNED AUTO_INCREMENT,"
@@ -53,8 +42,8 @@ cur.execute(
             "emp_id BIGINT UNSIGNED,"
             "specialty_id BIGINT UNSIGNED,"
             "PRIMARY KEY (id),"
-            "FOREIGN KEY (emp_id) REFERENCES employees (id),"
-            "FOREIGN KEY (specialty_id) REFERENCES specialties (id)"
+            "FOREIGN KEY (emp_id) REFERENCES employees(id),"
+            "FOREIGN KEY (specialty_id) REFERENCES specialties(id)"
             ");")
 cur.execute(
             "CREATE TABLE IF NOT EXISTS representatives("
@@ -68,6 +57,17 @@ cur.execute(
             "FOREIGN KEY (manager_id)"
             "   REFERENCES managers(id),"
             "FOREIGN KEY (specialty_id) REFERENCES specialties(id)"
+            ");")
+cur.execute("CREATE TABLE IF NOT EXISTS customers ("
+            "id BIGINT UNSIGNED AUTO_INCREMENT,"
+            "first_name VARCHAR(255),"
+            "last_name VARCHAR(255),"
+            "dob DATE,"
+            "sex ENUM('M', 'F', 'N/A') DEFAULT 'N/A',"
+            "notes TEXT,"
+            "rep_id BIGINT UNSIGNED,"
+            "PRIMARY KEY (id),"
+            "FOREIGN KEY (rep_id) REFERENCES representatives (id)"
             ");")
 cur.execute(
             "CREATE TABLE IF NOT EXISTS cases ("
@@ -86,6 +86,19 @@ root = Tk()
 
 
 theme = Theme()
+
+cur.execute("INSERT INTO employees(first_name, last_name, dob, sex, salary, notes, hire_date) VALUES"
+            "('The', 'Founder', '2000-05-25', 'N/A', 1, 'The Founder', '2000-05-25'),"
+            "('Co', 'Founder', '2000-10-04', 'M', 1, 'The Co Founder', '1991-09-21')")
+cur.execute("INSERT INTO specialties(title, description) VALUES ('Test', 'A dummy specialty that is practically useless')")
+cur.execute("INSERT INTO managers(emp_id, specialty_id) VALUES (0, 0)")
+cur.execute("INSERT INTO representatives(emp_id, manager_id, specialty_id) VALUES (1, 0, 0)")
+db.commit()
+
+# "id BIGINT UNSIGNED AUTO_INCREMENT,"
+#             "emp_id BIGINT UNSIGNED,"
+#             "manager_id BIGINT UNSIGNED,"
+#             "specialty_id BIGINT UNSIGNED,"
 
 
 class enter_new:
