@@ -42,8 +42,8 @@ cur.execute(
             "emp_id BIGINT UNSIGNED,"
             "specialty_id BIGINT UNSIGNED,"
             "PRIMARY KEY (id),"
-            "FOREIGN KEY (emp_id) REFERENCES employees(id),"
-            "FOREIGN KEY (specialty_id) REFERENCES specialties(id)"
+            "FOREIGN KEY (emp_id) REFERENCES employees(id) ON DELETE SET NULL,"
+            "FOREIGN KEY (specialty_id) REFERENCES specialties(id) ON DELETE SET NULL"
             ");")
 cur.execute(
             "CREATE TABLE IF NOT EXISTS representatives("
@@ -53,10 +53,10 @@ cur.execute(
             "specialty_id BIGINT UNSIGNED,"
             "PRIMARY KEY (id),"
             "FOREIGN KEY (emp_id)"
-            "   REFERENCES employees(id),"
+            "   REFERENCES employees(id) ON DELETE SET NULL,"
             "FOREIGN KEY (manager_id)"
-            "   REFERENCES managers(id),"
-            "FOREIGN KEY (specialty_id) REFERENCES specialties(id)"
+            "   REFERENCES managers(id) ON DELETE SET NULL,"
+            "FOREIGN KEY (specialty_id) REFERENCES specialties(id) ON DELETE SET NULL"
             ");")
 cur.execute("CREATE TABLE IF NOT EXISTS customers ("
             "id BIGINT UNSIGNED AUTO_INCREMENT,"
@@ -67,7 +67,7 @@ cur.execute("CREATE TABLE IF NOT EXISTS customers ("
             "notes TEXT,"
             "rep_id BIGINT UNSIGNED,"
             "PRIMARY KEY (id),"
-            "FOREIGN KEY (rep_id) REFERENCES representatives (id)"
+            "FOREIGN KEY (rep_id) REFERENCES representatives (id) ON DELETE SET NULL"
             ");")
 cur.execute(
             "CREATE TABLE IF NOT EXISTS cases ("
@@ -78,8 +78,8 @@ cur.execute(
             "customer_id BIGINT UNSIGNED,"
             "rep_id BIGINT UNSIGNED,"
             "PRIMARY KEY (id),"
-            "FOREIGN KEY (rep_id) REFERENCES representatives(id),"
-            "FOREIGN KEY (customer_id) REFERENCES customers(id)"
+            "FOREIGN KEY (rep_id) REFERENCES representatives(id) ON DELETE SET NULL,"
+            "FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL"
             ");")
 
 root = Tk()
@@ -87,13 +87,16 @@ root = Tk()
 
 theme = Theme()
 
-cur.execute("INSERT INTO employees(first_name, last_name, dob, sex, salary, notes, hire_date) VALUES"
-            "('The', 'Founder', '2000-05-25', 'N/A', 1, 'The Founder', '2000-05-25'),"
-            "('Co', 'Founder', '2000-10-04', 'M', 1, 'The Co Founder', '1991-09-21')")
-cur.execute("INSERT INTO specialties(title, description) VALUES ('Test', 'A dummy specialty that is practically useless')")
-cur.execute("INSERT INTO managers(emp_id, specialty_id) VALUES (0, 0)")
-cur.execute("INSERT INTO representatives(emp_id, manager_id, specialty_id) VALUES (1, 0, 0)")
-db.commit()
+# cur.execute("INSERT INTO employees(first_name, last_name, dob, sex, salary, notes, hire_date) VALUES"
+#             "('The', 'Founder', '2000-05-25', 'N/A', 1, 'The Founder', '2000-05-25'),"
+#             "('Co', 'Founder', '2000-10-04', 'M', 1, 'The Co Founder', '1991-09-21')")
+# db.commit()
+# cur.execute("INSERT INTO specialties(title, description) VALUES ('Test', 'A dummy specialty that is practically useless')")
+# db.commit()
+# cur.execute("INSERT INTO managers(emp_id, specialty_id) VALUES (1, 1)")
+# db.commit()
+# cur.execute("INSERT INTO representatives(emp_id, manager_id, specialty_id) VALUES (2, 1, 1)")
+# db.commit()
 
 # "id BIGINT UNSIGNED AUTO_INCREMENT,"
 #             "emp_id BIGINT UNSIGNED,"
