@@ -146,14 +146,25 @@ def add():
     addLabel.clear()
 
 
-mainbar = Label(root).pack()
+tl = Toplevel()
+show = None
 
-create = LabelFrame(mainbar).pack()
-createText = Label(create, text="Add").pack()
-addLabel = enter_new(create)
-add_button = Button(create, text="Submit", command=add).pack()
+def useDB():
+    global show
+    global createText
+    global addLabel
+    global add_button
 
-show = Label(root).pack()
+    tl.forget()
+    mainbar = Label(tl).pack()
+
+    create = LabelFrame(mainbar).pack()
+    createText = Label(create, text="Add").pack()
+    addLabel = enter_new(create)
+    add_button = Button(create, text="Submit", command=add).pack()
+
+    show = Label(tl).pack()
+
 
 results = []
 
@@ -162,15 +173,15 @@ def format_customer(n):
     return
 
 
-def showall():
-    cur.execute("SELECT * FROM customers")
+def showall(n):
+    cur.execute("SELECT * FROM " + n)
     for i in cur.fetchall():
         results.append(Label(show, text=format_customer(i)).pack())
 
 
 show_button = Button(root, text="Refresh", command=showall).pack()
 
-showall()
+showall("customers")
 
 root.mainloop()
 db.close()
