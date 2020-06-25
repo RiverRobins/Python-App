@@ -103,85 +103,72 @@ theme = Theme()
 #             "manager_id BIGINT UNSIGNED,"
 #             "specialty_id BIGINT UNSIGNED,"
 
-
-class enter_new:
-
-    def __init__(self, n):
-        self.label_first = Label(n, text="Enter first name: ", fg=theme.text).pack()
-        self.first = Entry(n)
-        self.first.pack()
-        self.label_last = Label(n, text="Enter last name: ", fg=theme.text).pack()
-        self.last = Entry(n)
-        self.last.pack()
-        self.label_dob = Label(n, text="Enter date of birth: ", fg=theme.text).pack()
-        self.dob = Entry(n)
-        self.dob.pack()
-        self.label_sex = Label(n, text="Enter sex: ", fg=theme.text).pack()
-        self.sex = Entry(n)
-        self.sex.pack()
-
-
-
-    def clear(self):
-        self.first.delete(0, -1)
-        self.last.delete(0, -1)
-        self.dob.delete(0, -1)
-        self.sex.delete(0, -1)
-
-    def getDate(self):
-        while True:  # 44-44-44
-            if len(self.dob.get()) <= 8:
-                return datetime.datetime.strptime(self.dob.get(), "%m-%d-%y")
-            elif len(self.dob.get()) >= 9:
-                return datetime.datetime.strptime(self.dob.get(), "%m-%d-%Y")
-            else:
-                messagebox.showwarning("Error processing date", "Please enter date format in MM/DD/YY or MM/DD/YYYY")
-
-
-
-def add():
-    global addLabel
-    cur.execute("INSERT INTO customers(first_name, last_name, dob, sex) VALUES ('%s', '%s', %s, '%s');" % (addLabel.first.get(), addLabel.last.get(), addLabel.getDate(), addLabel.sex.get()))
-    db.commit()
-    addLabel.clear()
-
-
-tl = Toplevel()
-show = None
-
-def useDB():
-    global show
-    global createText
-    global addLabel
-    global add_button
-
-    tl.forget()
-    mainbar = Label(tl).pack()
-
-    create = LabelFrame(mainbar).pack()
-    createText = Label(create, text="Add").pack()
-    addLabel = enter_new(create)
-    add_button = Button(create, text="Submit", command=add).pack()
-
-    show = Label(tl).pack()
-
-
-results = []
-
-
-def format_customer(n):
-    return
-
-
 def showall(n):
     cur.execute("SELECT * FROM " + n)
     for i in cur.fetchall():
         results.append(Label(show, text=format_customer(i)).pack())
 
+def openCustomers():
+    cw = Toplevel()
+    cw.title("Customers")
 
-show_button = Button(root, text="Refresh", command=showall).pack()
+    results = []
+    scrollbar = Scrollbar(root)
+    scrollbar.pack(side=RIGHT, fill=Y)
 
-showall("customers")
+    mylist = Listbox(root, yscrollcommand=scrollbar.set)
+    cur.execute("SELECT * FROM CUSTOMERS")
+    for i in cur.fetchall():
+        Label(cw, text=str(results.append(i)))
+
+
+    mylist.pack(side=LEFT, fill=BOTH)
+    scrollbar.config(command=mylist.yview)
+
+# class enter_new:
+#
+#     def __init__(self, n):
+#         self.label_first = Label(n, text="Enter first name: ", fg=theme.text).pack()
+#         self.first = Entry(n)
+#         self.first.pack()
+#         self.label_last = Label(n, text="Enter last name: ", fg=theme.text).pack()
+#         self.last = Entry(n)
+#         self.last.pack()
+#         self.label_dob = Label(n, text="Enter date of birth: ", fg=theme.text).pack()
+#         self.dob = Entry(n)
+#         self.dob.pack()
+#         self.label_sex = Label(n, text="Enter sex: ", fg=theme.text).pack()
+#         self.sex = Entry(n)
+#         self.sex.pack()
+#
+#
+#
+#     def clear(self):
+#         self.first.delete(0, -1)
+#         self.last.delete(0, -1)
+#         self.dob.delete(0, -1)
+#         self.sex.delete(0, -1)
+#
+#     def getDate(self):
+#         while True:  # 44-44-44
+#             if len(self.dob.get()) <= 8:
+#                 return datetime.datetime.strptime(self.dob.get(), "%m-%d-%y")
+#             elif len(self.dob.get()) >= 9:
+#                 return datetime.datetime.strptime(self.dob.get(), "%m-%d-%Y")
+#             else:
+#                 messagebox.showwarning("Error processing date", "Please enter date format in MM/DD/YY or MM/DD/YYYY")
+#
+#
+#
+# def add():
+#     global addLabel
+#     cur.execute("INSERT INTO customers(first_name, last_name, dob, sex) VALUES ('%s', '%s', %s, '%s');" % (addLabel.first.get(), addLabel.last.get(), addLabel.getDate(), addLabel.sex.get()))
+#     db.commit()
+#     addLabel.clear()
+
+
+cust_button = Button(root, text="Customers", command=openCustomers).pack()
+
 
 root.mainloop()
 db.close()
