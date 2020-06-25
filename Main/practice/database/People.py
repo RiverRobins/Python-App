@@ -82,9 +82,40 @@ cur.execute(
             "FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL"
             ");")
 
+cw = None
+def openCustomers():
+    global cw
+    cw = Toplevel(root, bg="#aaaa00")
+    cw.title("Customers")
+
+    enter_new = LabelFrame(cw).pack()
+
+    first = LabelFrame(enter_new).pack()
+    first_l = Label(first, text="Enter first name: ").pack()
+    first_e = Entry(first).pack()
+
+    last = LabelFrame(enter_new).pack()
+    last_l = Label(last, text="Enter last name: ").pack()
+    last_e = Entry(last).pack()
+
+    dob = LabelFrame(enter_new).pack()
+    dob_l = Label(dob, text="Enter date of birth: ").pack()
+    dob_e = Entry(last).pack()
+
+    results = []
+    scrollbar = Scrollbar(root)
+    scrollbar.pack(side=RIGHT, fill=Y)
+
+    customers = Listbox(root, yscrollcommand=scrollbar.set)
+    cur.execute("SELECT * FROM CUSTOMERS")
+    for i in cur.fetchall():
+        Label(cw, text=str(results.append(i)))
+
+    customers.pack(side=LEFT, fill=BOTH)
+    scrollbar.config(command=customers.yview)
+
+
 root = Tk()
-
-
 theme = Theme()
 
 # cur.execute("INSERT INTO employees(first_name, last_name, dob, sex, salary, notes, hire_date) VALUES"
@@ -102,28 +133,6 @@ theme = Theme()
 #             "emp_id BIGINT UNSIGNED,"
 #             "manager_id BIGINT UNSIGNED,"
 #             "specialty_id BIGINT UNSIGNED,"
-
-def showall(n):
-    cur.execute("SELECT * FROM " + n)
-    for i in cur.fetchall():
-        results.append(Label(show, text=format_customer(i)).pack())
-
-def openCustomers():
-    cw = Toplevel()
-    cw.title("Customers")
-
-    results = []
-    scrollbar = Scrollbar(root)
-    scrollbar.pack(side=RIGHT, fill=Y)
-
-    mylist = Listbox(root, yscrollcommand=scrollbar.set)
-    cur.execute("SELECT * FROM CUSTOMERS")
-    for i in cur.fetchall():
-        Label(cw, text=str(results.append(i)))
-
-
-    mylist.pack(side=LEFT, fill=BOTH)
-    scrollbar.config(command=mylist.yview)
 
 # class enter_new:
 #
@@ -168,7 +177,7 @@ def openCustomers():
 
 
 cust_button = Button(root, text="Customers", command=openCustomers).pack()
-
+# openCustomers()
 
 root.mainloop()
 db.close()
