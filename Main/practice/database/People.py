@@ -1,6 +1,7 @@
 import Creds as creds
 import mysql.connector
-from tkinter import *
+# from tkinter import *
+import tkinter as tk
 from tkinter import messagebox
 from tkcalendar import Calendar, DateEntry
 import datetime
@@ -85,37 +86,43 @@ cur.execute(
 cw = None
 def openCustomers():
     global cw
-    cw = Toplevel(root, bg="#aaaa00")
+    cw = tk.Toplevel(root) #root, bg="#aaaa00"
     cw.title("Customers")
 
-    enter_new = LabelFrame(cw).pack()
+    enter_new = tk.Frame(cw).pack()
 
-    first = LabelFrame(enter_new).pack()
-    first_l = Label(first, text="Enter first name: ").pack()
-    first_e = Entry(first).pack()
+    test = tk.Label(cw, text="NEW WINDOW TEXT").pack()
+    test_f = tk.Frame(cw).pack()
+    butt = tk.Button(cw, text="test button").pack()
 
-    last = LabelFrame(enter_new).pack()
-    last_l = Label(last, text="Enter last name: ").pack()
-    last_e = Entry(last).pack()
+    first = tk.Frame(enter_new).pack()
+    first_l = tk.Label(first, text="Enter first name: ").pack()
+    first_e = tk.Entry(first).pack()
 
-    dob = LabelFrame(enter_new).pack()
-    dob_l = Label(dob, text="Enter date of birth: ").pack()
-    dob_e = Entry(last).pack()
+    last = tk.Frame(enter_new).pack()
+    last_l = tk.Label(last, text="Enter last name: ").pack()
+    last_e = tk.Entry(last).pack()
+
+    dob = tk.Frame(enter_new).pack()
+    dob_l = tk.Label(dob, text="Enter date of birth: ").pack()
+    dob_e = tk.Entry(last).pack()
 
     results = []
-    scrollbar = Scrollbar(root)
-    scrollbar.pack(side=RIGHT, fill=Y)
+    scrollbar = tk.Scrollbar(root)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
-    customers = Listbox(root, yscrollcommand=scrollbar.set)
+    customers = tk.Listbox(root, yscrollcommand=scrollbar.set)
     cur.execute("SELECT * FROM CUSTOMERS")
     for i in cur.fetchall():
-        Label(cw, text=str(results.append(i)))
+        tk.Label(cw, text=str(results.append(i)))
 
-    customers.pack(side=LEFT, fill=BOTH)
+    customers.pack(side=tk.LEFT, fill=tk.BOTH)
     scrollbar.config(command=customers.yview)
 
+    cw.lift()
 
-root = Tk()
+
+root = tk.Tk()
 theme = Theme()
 
 # cur.execute("INSERT INTO employees(first_name, last_name, dob, sex, salary, notes, hire_date) VALUES"
@@ -176,8 +183,24 @@ theme = Theme()
 #     addLabel.clear()
 
 
-cust_button = Button(root, text="Customers", command=openCustomers).pack()
+cust_button = tk.Button(root, text="Customers", command=openCustomers).pack()
 # openCustomers()
+
+
+# def createNewWindow():
+#     newWindow = tkinter.Toplevel(root)
+#     newWindow.title("New")
+#     labelExample = tkinter.Label(newWindow, text = "New Window")
+#     buttonExample = tkinter.Button(newWindow, text = "New Window button")
+#
+#     labelExample.pack()
+#     buttonExample.pack()
+#
+# buttonExample = tkinter.Button(root,
+#               text="Create new window",
+#               command=createNewWindow)
+# buttonExample.pack()
+
 
 root.mainloop()
 db.close()
