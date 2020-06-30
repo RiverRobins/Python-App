@@ -86,37 +86,44 @@ cur.execute(
 cw = None
 def openCustomers():
     global cw
-    cw = tk.Toplevel(root) #root, bg="#aaaa00"
+    cw = tk.Toplevel(root)
     cw.title("Customers")
 
-    enter_new = tk.Frame(cw).pack()
+    enter_new = tk.Frame(cw, bg="#aaaa22")
+    enter_new.pack()
 
-    test = tk.Label(cw, text="NEW WINDOW TEXT").pack()
-    test_f = tk.Frame(cw).pack()
-    butt = tk.Button(cw, text="test button").pack()
+    first = tk.Frame(enter_new)
+    first.pack()
+    first_l = tk.Label(first, text="Enter first name: ")
+    first_l.pack()
+    first_e = tk.Entry(first)
+    first_e.pack()
 
-    first = tk.Frame(enter_new).pack()
-    first_l = tk.Label(first, text="Enter first name: ").pack()
-    first_e = tk.Entry(first).pack()
+    last = tk.Frame(enter_new)
+    last.pack()
+    last_l = tk.Label(last, text="Enter last name: ")
+    last_l.pack()
+    last_e = tk.Entry(last)
+    last_e.pack()
 
-    last = tk.Frame(enter_new).pack()
-    last_l = tk.Label(last, text="Enter last name: ").pack()
-    last_e = tk.Entry(last).pack()
-
-    dob = tk.Frame(enter_new).pack()
-    dob_l = tk.Label(dob, text="Enter date of birth: ").pack()
-    dob_e = tk.Entry(last).pack()
+    dob = tk.Frame(enter_new)
+    dob.pack()
+    dob_l = tk.Label(dob, text="Enter date of birth: ")
+    dob_l.pack()
+    dob_e = tk.Entry(dob)
+    dob_e.pack()
 
     results = []
     scrollbar = tk.Scrollbar(root)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
     customers = tk.Listbox(root, yscrollcommand=scrollbar.set)
+    customers.pack(side=tk.LEFT, fill=tk.BOTH)
     cur.execute("SELECT * FROM CUSTOMERS")
     for i in cur.fetchall():
-        tk.Label(cw, text=str(results.append(i)))
+        temp = tk.Label(customers, text=str(results.append(i)))
+        temp.pack()
 
-    customers.pack(side=tk.LEFT, fill=tk.BOTH)
     scrollbar.config(command=customers.yview)
 
     cw.lift()
