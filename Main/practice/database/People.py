@@ -129,6 +129,7 @@ def openCustomers():
     cw.lift()
 
 
+
 root = tk.Tk()
 theme = Theme()
 
@@ -192,22 +193,6 @@ theme = Theme()
 
 cust_button = tk.Button(root, text="Customers", command=openCustomers).pack()
 # openCustomers()
-
-
-# def createNewWindow():
-#     newWindow = tkinter.Toplevel(root)
-#     newWindow.title("New")
-#     labelExample = tkinter.Label(newWindow, text = "New Window")
-#     buttonExample = tkinter.Button(newWindow, text = "New Window button")
-#
-#     labelExample.pack()
-#     buttonExample.pack()
-#
-# buttonExample = tkinter.Button(root,
-#               text="Create new window",
-#               command=createNewWindow)
-# buttonExample.pack()
-
 
 root.mainloop()
 db.close()

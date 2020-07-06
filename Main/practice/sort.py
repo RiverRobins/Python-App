@@ -16,13 +16,15 @@ def bubble(n):
 
 
 def linear(n):
+    next = 0
+    prev = 0
     changed = True
     while changed:
         i = 0
         while i < len(n) - 1:
             if n[i] < n[0]:
+                locals()
                 temp = n[i]
-
                 i2 = 0
                 next = 0
                 prev = 0
@@ -31,7 +33,6 @@ def linear(n):
                     next = n[i2 + 1]
                     n[i2] = prev
                     i2 += 1
-
                 n[0] = temp
                 changed = True
                 break
