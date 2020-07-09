@@ -83,7 +83,46 @@ cur.execute(
             "FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL"
             ");")
 
+# cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % ("customer1", "last", "1992-08-21", "N/A", "Insert notes here", "2"))
+# cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % ("customer2", "last", "1992-08-21", "N/A", "Insert notes here", "2"))
+# cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % ("customer3", "aerg", "1992-08-21", "N/A", "Insert notes here", "2"))
+# cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % ("customer4", "grtege", "1992-08-21", "N/A", "Insert notes here", "2"))
+# cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % ("customer5", "name", "1992-08-21", "N/A", "Insert notes here", "2"))
+# cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % ("customer6", "ronaldwashingtonrosthchild", "1992-08-21", "N/A", "Insert notes here", "2"))
+# cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % ("customer7", "gertrude", "1992-08-21", "N/A", "Insert notes here", "2"))
+# cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % ("customer8", "chad", "1992-08-21", "N/A", "Insert notes here", "2"))
+# cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % ("customer9", "AntiCom", "1992-08-21", "N/A", "Insert notes here", "2"))
+
+
 cw = None
+
+def closeTab(n):
+    if messagebox.askokcancel("Quit", "Do you want to exit" + n + " ?"):
+        cw.destroy()
+
+
+# def search(n=""):
+#     cur.execute()
+
+
+def searchCustomers(n=False):
+    if not n:
+        cur.execute("SELECT * FROM customers")
+        res = cur.fetchall()
+        print("Results: ================================")
+        for i in range(len(res)):
+            print(res[i])
+        print("=========================================")
+        return res
+        # return cur.fetchall()
+
+    cur.execute("SELECT * FROM customers WHERE LIKE '%{}%'".format(n))
+    # res = cur.fetchall()
+    # for i in range(len(res)):
+    #     print(res[i])
+    return cur.fetchall()
+
+
 def openCustomers():
     global cw
     cw = tk.Toplevel(root)
@@ -113,8 +152,20 @@ def openCustomers():
     dob_e = tk.Entry(dob)
     dob_e.pack()
 
+    cust_search = tk.Frame(cw)
+    cust_search.pack()
+    cust_search_l = tk.Label(cust_search, text="Search:")
+    cust_search_l.pack()
+    cust_search_e = tk.Entry(cust_search)
+    cust_search_e.pack()
+    cust_search_b = tk.Button(cust_search ,text="Enter", command=lambda: searchCustomers(cust_search_e.get()))
+    cust_search_b.pack()
+
+    cust_res_con = tk.Frame(cw)
+    cust_res_con.pack()
+
     results = []
-    scrollbar = tk.Scrollbar(root)
+    scrollbar = tk.Scrollbar(cust_res_con)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
     customers = tk.Listbox(root, yscrollcommand=scrollbar.set)
@@ -127,7 +178,7 @@ def openCustomers():
     scrollbar.config(command=customers.yview)
 
     cw.lift()
-
+    cw.protocol("WM_DELETE_WINDOW", )
 
 
 root = tk.Tk()
@@ -184,11 +235,11 @@ theme = Theme()
 #
 #
 #
-# def add():
-#     global addLabel
-#     cur.execute("INSERT INTO customers(first_name, last_name, dob, sex) VALUES ('%s', '%s', %s, '%s');" % (addLabel.first.get(), addLabel.last.get(), addLabel.getDate(), addLabel.sex.get()))
-#     db.commit()
-#     addLabel.clear()
+def add():
+    global addLabel
+    cur.execute("INSERT INTO customers(first_name, last_name, dob, sex) VALUES ('%s', '%s', %s, '%s');" % (addLabel.first.get(), addLabel.last.get(), addLabel.getDate(), addLabel.sex.get()))
+    db.commit()
+    addLabel.clear()
 
 
 cust_button = tk.Button(root, text="Customers", command=openCustomers).pack()

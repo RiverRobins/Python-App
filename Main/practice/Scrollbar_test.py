@@ -1,10 +1,14 @@
 from tkinter import *
 
 root = Tk()
-scrollbar = Scrollbar(root)
+
+f = Frame(root)
+f.pack()
+
+scrollbar = Scrollbar(f)
 scrollbar.pack(side=RIGHT, fill=Y)
 
-mylist = Listbox(root, yscrollcommand=scrollbar.set)
+mylist = Listbox(f, yscrollcommand=scrollbar.set)
 for line in range(100):
     mylist.insert(END, "item " + str(line))
 
