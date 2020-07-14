@@ -126,6 +126,7 @@ def searchCustomers(n=False):
 def openCustomers():
     global cw
     cw = tk.Toplevel(root)
+    cw.geometry("300x300")
     cw.title("Customers")
 
     enter_new = tk.Frame(cw, bg="#aaaa22")
@@ -151,6 +152,20 @@ def openCustomers():
     dob_l.pack()
     dob_e = tk.Entry(dob)
     dob_e.pack()
+
+    rep = tk.Frame(enter_new)
+    rep.pack()
+    rep_l = tk.Label(rep, text="Select a representative")
+    rep_l.pack()
+
+    cur.execute("SELECT representatives.id AS rep_id, employees.first_name, employees.last_name FROM employees JOIN representatives ON employees.id = representatives.emp_id;")
+    reps = cur.fetchall()
+
+    rep_var = tk.StringVar(cw)
+    rep_var.set(reps[0])
+
+    rep_m = tk.OptionMenu(rep, rep_var, reps)
+    rep_m.pack()
 
     cust_search = tk.Frame(cw)
     cust_search.pack()
@@ -237,7 +252,7 @@ theme = Theme()
 #
 def add():
     global addLabel
-    cur.execute("INSERT INTO customers(first_name, last_name, dob, sex) VALUES ('%s', '%s', %s, '%s');" % (addLabel.first.get(), addLabel.last.get(), addLabel.getDate(), addLabel.sex.get()))
+    cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, rep_id) VALUES ('%s', '%s', %s, '%s', %s);" % (addLabel.first.get(), addLabel.last.get(), addLabel.getDate(), addLabel.sex.get(), 2))
     db.commit()
     addLabel.clear()
 
