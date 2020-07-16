@@ -116,8 +116,9 @@ def searchCustomers(n=False):
         return res
         # return cur.fetchall()
 
-    cur.execute("SELECT * FROM customers WHERE LIKE '%{}%'".format(n))
-    # res = cur.fetchall()
+    cur.execute("SELECT * FROM customers WHERE first_name LIKE '%{}%' OR last_name LIKE '%{}%' OR id LIKE '%{}% OR notes LIKE '%{}%".format(n, n, n, n))
+    global results
+    results = cur.fetchall()
     # for i in range(len(res)):
     #     print(res[i])
     return cur.fetchall()
@@ -160,11 +161,20 @@ def openCustomers():
 
     cur.execute("SELECT representatives.id AS rep_id, employees.first_name, employees.last_name FROM employees JOIN representatives ON employees.id = representatives.emp_id;")
     reps = cur.fetchall()
+    reps_dis = []
+    for i in reps:
+        reps_dis.append(str(i[1]) + " " + str(i[2]) + " (#" + str(i[0]) +")")
 
     rep_var = tk.StringVar(cw)
     rep_var.set(reps[0])
 
-    rep_m = tk.OptionMenu(rep, rep_var, reps)
+    rep_selected = reps[0][0]
+
+    def setRep(n):
+        temp = str.split("(#")
+        rep_selected = temp[-1][0:-2]
+
+    rep_m = tk.OptionMenu(rep, rep_var, reps_dis)
     rep_m.pack()
 
     cust_search = tk.Frame(cw)
@@ -173,7 +183,7 @@ def openCustomers():
     cust_search_l.pack()
     cust_search_e = tk.Entry(cust_search)
     cust_search_e.pack()
-    cust_search_b = tk.Button(cust_search ,text="Enter", command=lambda: searchCustomers(cust_search_e.get()))
+    cust_search_b = tk.Button(cust_search ,text="Enter", command=lambda: searchCustomers(str.strip(cust_search_e.get())))
     cust_search_b.pack()
 
     cust_res_con = tk.Frame(cw)
@@ -250,9 +260,9 @@ theme = Theme()
 #
 #
 #
-def add():
+def add(n):
     global addLabel
-    cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, rep_id) VALUES ('%s', '%s', %s, '%s', %s);" % (addLabel.first.get(), addLabel.last.get(), addLabel.getDate(), addLabel.sex.get(), 2))
+    cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, rep_id) VALUES ('%s', '%s', %s, '%s', %s);" % (addLabel.first.get(), addLabel.last.get(), addLabel.getDate(), addLabel.sex.get(), n))
     db.commit()
     addLabel.clear()
 
