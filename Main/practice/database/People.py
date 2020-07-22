@@ -154,6 +154,20 @@ def openCustomers():
     dob_e = tk.Entry(dob)
     dob_e.pack()
 
+    sex = tk.Frame(enter_new)
+    sex.pack()
+    sex_l = tk.Label(sex, text="Enter date sex(M, F, or N/A): ")
+    sex_l.pack()
+    sex_e = tk.Entry(sex)
+    sex_e.pack()
+
+    notes = tk.Frame(enter_new)
+    notes.pack()
+    notes_l = tk.Label(notes, text="Notes: ")
+    notes_l.pack()
+    notes_e = tk.Text(notes, height=4)
+    notes_e.pack()
+
     rep = tk.Frame(enter_new)
     rep.pack()
     rep_l = tk.Label(rep, text="Select a representative")
@@ -161,21 +175,27 @@ def openCustomers():
 
     cur.execute("SELECT representatives.id AS rep_id, employees.first_name, employees.last_name FROM employees JOIN representatives ON employees.id = representatives.emp_id;")
     reps = cur.fetchall()
-    reps_dis = []
-    for i in reps:
-        reps_dis.append(str(i[1]) + " " + str(i[2]) + " (#" + str(i[0]) +")")
 
     rep_var = tk.StringVar(cw)
     rep_var.set(reps[0])
 
     rep_selected = reps[0][0]
+    locals()
 
     def setRep(n):
+        locals()
         temp = str.split("(#")
         rep_selected = temp[-1][0:-2]
 
-    rep_m = tk.OptionMenu(rep, rep_var, reps_dis)
+    rep_m = tk.OptionMenu(rep, rep_var, reps)
     rep_m.pack()
+
+    def new_cust():
+        print(rep_selected)
+        cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % (first_e.get(), last_e.get(), dob_e.get(), sex_e.get(), notes_e.get("1.0", tk.END), str(rep_selected)))
+
+    submit = tk.Button(enter_new, text="Sumbit", command=new_cust)
+    submit.pack()
 
     cust_search = tk.Frame(cw)
     cust_search.pack()
@@ -203,7 +223,7 @@ def openCustomers():
     scrollbar.config(command=customers.yview)
 
     cw.lift()
-    cw.protocol("WM_DELETE_WINDOW", )
+    cw.protocol("WM_DELETE_WINDOW", db.commit())
 
 
 root = tk.Tk()
