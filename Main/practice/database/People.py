@@ -309,25 +309,25 @@ def openEmployees():
 
     rep = tk.Frame(enter_new)
     rep.pack()
-    rep_l = tk.Label(rep, text="Select a representative")
-    rep_l.pack()
+    # rep_l = tk.Label(rep, text="Select a representative")
+    # rep_l.pack()
 
-    cur.execute("SELECT representatives.id AS rep_id, employees.first_name, employees.last_name FROM employees JOIN representatives ON employees.id = representatives.emp_id;")
-    reps = cur.fetchall()
+    # cur.execute("SELECT representatives.id AS rep_id, employees.first_name, employees.last_name FROM employees JOIN representatives ON employees.id = representatives.emp_id;")
+    # reps = cur.fetchall()
+    #
+    # rep_var = tk.StringVar(cw)
+    # rep_var.set(reps[0])
+    #
+    # rep_selected = reps[0][0]
+    # locals()
 
-    rep_var = tk.StringVar(cw)
-    rep_var.set(reps[0])
+    # def setRep(n):
+    #     locals()
+    #     temp = str.split("(#")
+    #     rep_selected = temp[-1][0:-2]
 
-    rep_selected = reps[0][0]
-    locals()
-
-    def setRep(n):
-        locals()
-        temp = str.split("(#")
-        rep_selected = temp[-1][0:-2]
-
-    rep_m = tk.OptionMenu(rep, rep_var, reps)
-    rep_m.pack()
+    # rep_m = tk.OptionMenu(rep, rep_var, reps)
+    # rep_m.pack()
 
     # submit = tk.Button(enter_new, text="Sumbit", command=new_cust)
     # submit.pack()
@@ -338,7 +338,7 @@ def openEmployees():
     cust_search_l.pack()
     cust_search_e = tk.Entry(cust_search)
     cust_search_e.pack()
-    cust_search_b = tk.Button(cust_search ,text="Enter", command=lambda: searchCustomers(str.strip(cust_search_e.get())))
+    cust_search_b = tk.Button(cust_search, text="Enter", command=lambda: searchCustomers(str.strip(cust_search_e.get())))
     cust_search_b.pack()
 
     cust_res_con = tk.Frame(cw)
@@ -350,7 +350,7 @@ def openEmployees():
 
     customers = tk.Listbox(root, yscrollcommand=scrollbar.set)
     customers.pack(side=tk.LEFT, fill=tk.BOTH)
-    cur.execute("SELECT * FROM CUSTOMERS")
+    cur.execute("SELECT * FROM employees")
     for i in cur.fetchall():
         temp = tk.Label(customers, text=str(results.append(i)))
         temp.pack()
@@ -363,67 +363,14 @@ def openEmployees():
         cw = None
 
     cw.lift()
-    cw.protocol("WM_DELETE_WINDOW", db.commit())
+    cw.protocol("WM_DELETE_WINDOW", exit())
 
 
 root = tk.Tk()
 theme = Theme()
 
-# cur.execute("INSERT INTO employees(first_name, last_name, dob, sex, salary, notes, hire_date) VALUES"
-#             "('The', 'Founder', '2000-05-25', 'N/A', 1, 'The Founder', '2000-05-25'),"
-#             "('Co', 'Founder', '2000-10-04', 'M', 1, 'The Co Founder', '1991-09-21')")
-# db.commit()
-# cur.execute("INSERT INTO specialties(title, description) VALUES ('Test', 'A dummy specialty that is practically useless')")
-# db.commit()
-# cur.execute("INSERT INTO managers(emp_id, specialty_id) VALUES (1, 1)")
-# db.commit()
-# cur.execute("INSERT INTO representatives(emp_id, manager_id, specialty_id) VALUES (2, 1, 1)")
-# db.commit()
-
-# "id BIGINT UNSIGNED AUTO_INCREMENT,"
-#             "emp_id BIGINT UNSIGNED,"
-#             "manager_id BIGINT UNSIGNED,"
-#             "specialty_id BIGINT UNSIGNED,"
-
-# class enter_new:
-#
-#     def __init__(self, n):
-#         self.label_first = Label(n, text="Enter first name: ", fg=theme.text).pack()
-#         self.first = Entry(n)
-#         self.first.pack()
-#         self.label_last = Label(n, text="Enter last name: ", fg=theme.text).pack()
-#         self.last = Entry(n)
-#         self.last.pack()
-#         self.label_dob = Label(n, text="Enter date of birth: ", fg=theme.text).pack()
-#         self.dob = Entry(n)
-#         self.dob.pack()
-#         self.label_sex = Label(n, text="Enter sex: ", fg=theme.text).pack()
-#         self.sex = Entry(n)
-#         self.sex.pack()
-#
-#
-#
-#     def clear(self):
-#         self.first.delete(0, -1)
-#         self.last.delete(0, -1)
-#         self.dob.delete(0, -1)
-#         self.sex.delete(0, -1)
-#
-#     def getDate(self):
-#         while True:  # 44-44-44
-#             if len(self.dob.get()) <= 8:
-#                 return datetime.datetime.strptime(self.dob.get(), "%m-%d-%y")
-#             elif len(self.dob.get()) >= 9:
-#                 return datetime.datetime.strptime(self.dob.get(), "%m-%d-%Y")
-#             else:
-#                 messagebox.showwarning("Error processing date", "Please enter date format in MM/DD/YY or MM/DD/YYYY")
-#
-#
-#
-
-
-
 cust_button = tk.Button(root, text="Customers", command=openCustomers).pack()
+emp_button = tk.Button(root, text="Employees", command=openEmployees()).pack()
 
 root.mainloop()
 db.close()
