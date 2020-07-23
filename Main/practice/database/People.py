@@ -156,7 +156,7 @@ def openCustomers():
 
     sex = tk.Frame(enter_new)
     sex.pack()
-    sex_l = tk.Label(sex, text="Enter date sex(M, F, or N/A): ")
+    sex_l = tk.Label(sex, text="Enter sex(M, F, or N/A): ")
     sex_l.pack()
     sex_e = tk.Entry(sex)
     sex_e.pack()
@@ -195,32 +195,35 @@ def openCustomers():
         try:
             locals()
             if str.strip(first_e.get()) == "":
-                errs.append("First name")
+                errs.append("First Name")
             if str.strip(last_e.get()) == "":
-                errs.append("Last name")
-            if str.strip(dob_e) == "":
-                errs.append("Date of birth")
-            if str.strip(sex_e.get()) == "":
+                errs.append("Last Name")
+            if str.strip(dob_e.get()) == "":
+                errs.append("Date of Birth")
+            if str.strip(sex_e.get()) == "" or str.strip(sex_e.get()) is None:
                 errs.append("Sex")
-            print("errs amount: " + str(len(errs)))
-            print(errs)
+            elif str.strip(sex_e.get()) != "M" or str.strip(sex_e.get()) != "F" or str.strip(sex_e.get()) != "N/A":
+                errs.append("Valid Sex(M, F, or N/A) '" + str.strip(sex_e.get()) + "' is not valid sex")
             if len(errs) == 0:
                 cur.execute(
-                    "INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', %s, '%s', %s, %s);" % (addLabel.first.get(), addLabel.last.get(), addLabel.getDate(), addLabel.sex.get(), notes_e.get("1.0", tk.END), str(rep_selected)))
+                    "INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', %s, '%s', %s, %s);" % (first_e.get(), last_e.get(), dob_e, sex_e.get(), notes_e.get("1.0", tk.END), str(rep_selected)))
                 db.commit()
         except:
+            print("errs amount: " + str(len(errs)))
+            print(errs)
             messagebox.showwarning("Error processing date", "Please enter date format in YY-MM-DD or YYYY-MM-DD")
         if len(errs) > 0:
             err_str = ""
             i = 0
             while i < len(errs):
                 err_str += errs[i]
-                if len(errs) > 2:
+                if len(errs) > 2 and i < len(errs) - 1:
                     err_str += ", "
                 else:
                     err_str += " "
-                if i == len(errs) - 1 and len(errs) <= 1:
+                if i == len(errs) - 2 and len(errs) >= 1:
                     err_str += "and "
+                i += 1
             messagebox.showwarning("Error processing values", "Please enter values for " + err_str)
         first_e.delete(0, 'end')
         last_e.delete(0, 'end')
