@@ -6,6 +6,9 @@ from tkinter import messagebox
 from tkcalendar import Calendar, DateEntry
 import datetime
 
+from database.Tabs import Customer
+from database.Tabs.Customer import Customers
+
 
 class Theme:
     text = "#000000"
@@ -100,15 +103,6 @@ def closeTab(n):
     if messagebox.askokcancel("Quit", "Do you want to exit" + n + " ?"):
         cw.destroy()
 
-
-# def search(n=""):
-#     cur.execute()
-
-
- # global cw
-
-
-
 def openEmployees():
     global cw
     cw = tk.Toplevel(root)
@@ -178,18 +172,6 @@ def openEmployees():
     # submit = tk.Button(enter_new, text="Sumbit", command=new_cust)
     # submit.pack()
 
-    cust_search = tk.Frame(cw)
-    cust_search.pack()
-    cust_search_l = tk.Label(cust_search, text="Search:")
-    cust_search_l.pack()
-    cust_search_e = tk.Entry(cust_search)
-    cust_search_e.pack()
-    cust_search_b = tk.Button(cust_search, text="Enter", command=lambda: searchCustomers(str.strip(cust_search_e.get())))
-    cust_search_b.pack()
-
-    cust_res_con = tk.Frame(cw)
-    cust_res_con.pack()
-
     results = []
     scrollbar = tk.Scrollbar(cust_res_con)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -215,7 +197,7 @@ def openEmployees():
 root = tk.Tk()
 theme = Theme()
 
-cust_button = tk.Button(root, text="Customers", command=openCustomers).pack()
+cust_button = tk.Button(root, text="Customers", command=Customers.openCustomers).pack()
 emp_button = tk.Button(root, text="Employees", command=openEmployees()).pack()
 
 root.mainloop()

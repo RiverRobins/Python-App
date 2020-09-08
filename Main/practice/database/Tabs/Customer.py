@@ -160,6 +160,19 @@ class Customers:
         cust_res_con = tk.Frame(cw)
         cust_res_con.pack()
 
+        cust_search = tk.Frame(cw)
+        cust_search.pack()
+        cust_search_l = tk.Label(cust_search, text="Search:")
+        cust_search_l.pack()
+        cust_search_e = tk.Entry(cust_search)
+        cust_search_e.pack()
+        cust_search_b = tk.Button(cust_search, text="Enter",
+                                  command=lambda: self.searchCustomers(str.strip(cust_search_e.get())))
+        cust_search_b.pack()
+
+        cust_res_con = tk.Frame(cw)
+        cust_res_con.pack()
+
         results = []
         scrollbar = tk.Scrollbar(cust_res_con)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -175,3 +188,5 @@ class Customers:
 
         cw.lift()
         cw.protocol("WM_DELETE_WINDOW", db.commit())
+
+
