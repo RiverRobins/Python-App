@@ -1,10 +1,6 @@
-from database.People import cur
-from database.People import root
-from database.People import db
-
+# from practice.database.People
 import Creds as creds
 import mysql.connector
-# from tkinter import *
 import tkinter as tk
 from tkinter import messagebox
 from tkcalendar import Calendar, DateEntry
@@ -12,7 +8,9 @@ import datetime
 
 
 class Customers:
-    # def __init__(self):
+    def __init__(self, cur, cw):
+        self.cur = cur
+        self.cw = cw
 
     def searchCustomers(self, n=False):
         if not n:
@@ -34,8 +32,8 @@ class Customers:
         #     print(res[i])
         return cur.fetchall()
 
-    def openCustomers(self):
-        global cw
+    def openCustomers(self, cw):
+        # global cw
         cw = tk.Toplevel(root)
         cw.geometry("300x300")
         cw.title("Customers")
@@ -160,18 +158,18 @@ class Customers:
         cust_res_con = tk.Frame(cw)
         cust_res_con.pack()
 
-        cust_search = tk.Frame(cw)
-        cust_search.pack()
-        cust_search_l = tk.Label(cust_search, text="Search:")
-        cust_search_l.pack()
-        cust_search_e = tk.Entry(cust_search)
-        cust_search_e.pack()
-        cust_search_b = tk.Button(cust_search, text="Enter",
-                                  command=lambda: self.searchCustomers(str.strip(cust_search_e.get())))
-        cust_search_b.pack()
-
-        cust_res_con = tk.Frame(cw)
-        cust_res_con.pack()
+        # cust_search = tk.Frame(cw)
+        # cust_search.pack()
+        # cust_search_l = tk.Label(cust_search, text="Search:")
+        # cust_search_l.pack()
+        # cust_search_e = tk.Entry(cust_search)
+        # cust_search_e.pack()
+        # cust_search_b = tk.Button(cust_search, text="Enter",
+        #                           command=lambda: self.searchCustomers(str.strip(cust_search_e.get())))
+        # cust_search_b.pack()
+        #
+        # cust_res_con = tk.Frame(cw)
+        # cust_res_con.pack()
 
         results = []
         scrollbar = tk.Scrollbar(cust_res_con)

@@ -1,13 +1,15 @@
-import Creds as creds
-import mysql.connector
-# from tkinter import *
 import tkinter as tk
 from tkinter import messagebox
-from tkcalendar import Calendar, DateEntry
-import datetime
 
-from database.Tabs import Customer
-from database.Tabs.Customer import Customers
+import Creds as creds
+import mysql.connector
+
+from practice.database.Tabs.Customer import *
+# import Tabs.Customer
+
+
+# from tkcalendar import Calendar, DateEntry
+# import datetime
 
 
 class Theme:
@@ -86,6 +88,7 @@ cur.execute(
             "FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL"
             ");")
 
+
 # cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % ("customer1", "last", "1992-08-21", "N/A", "Insert notes here", "2"))
 # cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % ("customer2", "last", "1992-08-21", "N/A", "Insert notes here", "2"))
 # cur.execute("INSERT INTO customers(first_name, last_name, dob, sex, notes, rep_id) VALUES ('%s', '%s', '%s', '%s', '%s', %s);" % ("customer3", "aerg", "1992-08-21", "N/A", "Insert notes here", "2"))
@@ -99,9 +102,11 @@ cur.execute(
 
 cw = None
 
+
 def closeTab(n):
     if messagebox.askokcancel("Quit", "Do you want to exit" + n + " ?"):
         cw.destroy()
+
 
 def openEmployees():
     global cw
@@ -172,6 +177,19 @@ def openEmployees():
     # submit = tk.Button(enter_new, text="Sumbit", command=new_cust)
     # submit.pack()
 
+    # emp_search = tk.Frame(cw)
+    # emp_search.pack()
+    # emp_search_l = tk.Label(emp_search, text="Search:")
+    # emp_search_l.pack()
+    # emp_search_e = tk.Entry(emp_search)
+    # emp_search_e.pack()
+    # emp_search_b = tk.Button(emp_search, text="Enter",
+    #                           command=lambda: self.searchCustomers(str.strip(emp_search_e.get())))
+    # emp_search_b.pack()
+
+    cust_res_con = tk.Frame(cw)
+    cust_res_con.pack()
+
     results = []
     scrollbar = tk.Scrollbar(cust_res_con)
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -197,7 +215,7 @@ def openEmployees():
 root = tk.Tk()
 theme = Theme()
 
-cust_button = tk.Button(root, text="Customers", command=Customers.openCustomers).pack()
+cust_button = tk.Button(root, text="Customers", command=lambda: Customers.openCustomers(cw=cw)).pack()
 emp_button = tk.Button(root, text="Employees", command=openEmployees()).pack()
 
 root.mainloop()
