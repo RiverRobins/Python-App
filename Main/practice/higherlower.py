@@ -63,22 +63,27 @@ while True:
         current_guesses = 0
         number = random.randint(selected_difficulty.lower, selected_difficulty.higher)
         while True:
-            guess = input(f"Enter a number between {selected_difficulty.lower} and {selected_difficulty.higher}")
-
-            if number > int(guess) > selected_difficulty.lower:
-                print("Lower")
-                current_guesses += 1
-            elif number < int(guess) < selected_difficulty.higher:
-                print("Higher")
-                current_guesses += 1
-            elif number == guess:
-                suff = "!"
-                if selected_difficulty.guesses != math.inf:
-                    suff = " with" + str(selected_difficulty.guesses - current_guesses) + " remaining!"
-                print(f"You won! You guessed the correct number({number}), in {current_guesses}" + suff)
-                break
+            guess = input(f"Enter a number between {selected_difficulty.lower} and {selected_difficulty.higher}\n")
+            if str.isnumeric(guess):
+                if number < int(guess) > selected_difficulty.lower:
+                    print("Lower")
+                    current_guesses += 1
+                elif number > int(guess) and int(guess) < selected_difficulty.higher:
+                    print("Higher")
+                    current_guesses += 1
+                elif str(number) == guess:
+                    current_guesses += 1
+                    suff = "!"
+                    if selected_difficulty.guesses != math.inf:
+                        suff = "(with " + str(selected_difficulty.guesses - current_guesses) + " remaining!)"
+                    print(f"You won! You guessed the correct number({number}), in {current_guesses} guess" + suff)
+                    break
+                else:
+                    print("Invalid guess, please make sure your guess is in the right range.")
+            elif guess == "cheat":
+                print("The number is " + str(number))
             else:
-                print("Invalid guess, please make sure your guess is in the right range.")
+                print("Invalid input, please enter a number.")
 
     print("Please enter a lower number for the range")
     print("Please enter a lower number for the range")
