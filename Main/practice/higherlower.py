@@ -86,8 +86,25 @@ while True:
                 print("Invalid input, please enter a number.")
     elif str.strip(resp) == "2":
         print("N/A")
-
-    print("Please enter a lower number for the range")
-    print("Please enter a lower number for the range")
-
-
+        print("Please enter a lower number for the range")
+        tempL = input("")
+        print("Please enter a higher number for the range")
+        tempH = input("")
+        print("Please enter a guess limit for difficulty(optional, press enter to skip)")
+        tempG = input("")
+        if str.strip(tempG) == "" or tempG == 0 or not str.isnumeric(tempG):
+            tempG = "NA"
+        print("Please enter a name for the difficulty(optional, press enter to skip)")
+        tempN = input("")
+        if str.strip(tempN) == "":
+            tempN = "Custom Difficulty " + str(len(difficulties) - 11)
+        displayguesses = "Guesses: Unlimited"
+        if tempG != "NA":
+            displayguesses = "Guesses: " + str(tempG)
+        print(f"{tempN}\n  Lower: {str(tempL)}  Higher: {str(tempH)}  \n  {displayguesses}\n  ")
+        print("Confirm: Please enter 'Y' or 'N'.")
+        if str.capitalize(input("")) == "Y":
+            if tempG == "NA":
+                difficulties.append(difficulty(tempL, tempH, name=tempN))
+            else:
+                difficulties.append(difficulty(tempL, tempH, float(tempG), tempN))
